@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import logo from "./logo.svg";
 import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
-import AuthService from './utils/AuthService'
+import AuthService from "./utils/AuthService";
 import "./App.css";
 
 export default class App extends Component {
@@ -51,16 +51,23 @@ export default class App extends Component {
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <p>Frontend of Complete Store</p>
+            <div className="user-menu">
+                <ul className='flex-column'>
+                  <li>
+                    <a className='link' href='/' onClick={this.logout}>Logout</a>
+                  </li>
+                </ul>
+              </div>
           </header>
         </div>
       );
     } else {
       return (
         <React.Fragment>
-          <Redirect to="/signup" />
-
           <div className="App flex">
             <header className="App-header">
+              <Signup getUser={this.getUser}/>
+              <Login />
               <Switch>
                 <Route
                   exact

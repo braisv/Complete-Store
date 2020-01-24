@@ -7,7 +7,6 @@ const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
 
 // Bcrypt to encrypt passwords
-const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 const login = (req, user) => {
@@ -26,12 +25,12 @@ const login = (req, user) => {
 router.post("/signup", (req, res, next) => {
   const { username, password, name, surname, email, phone } = req.body;
 
-  // console.log('username', username)
-  // console.log('password', password)
-  // console.log('name', name)
-  // console.log('surname', surname)
-  // console.log('email', email)
-  // console.log('phone', phone)
+  console.log('username', username)
+  console.log('password', password)
+  console.log('name', name)
+  console.log('surname', surname)
+  console.log('email', email)
+  console.log('phone', phone)
 
   // Check for non empty user or password
   if (!username || !password) {
@@ -41,7 +40,6 @@ router.post("/signup", (req, res, next) => {
   // Check if user exists in DB
   User.findOne({ username }, (err, foundUser) => {
     if (foundUser) throw new Error("Username already exists");
-
     const characters =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let token = "";
@@ -66,8 +64,8 @@ router.post("/signup", (req, res, next) => {
 
     newUser
       .save()
-      .then( user => {
-        const transporter = nodemailer.createTransport({
+      .then(user => {
+        let transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
             user: process.env.EMAIL,
@@ -78,7 +76,7 @@ router.post("/signup", (req, res, next) => {
         const port = process.env.PORT;
 
         const message = {
-          from: `Nodemailer Enterprise <${process.env.EMAIL}>`,
+          from: `Nodemailer Enterprise`,
           to: email,
           subject: "Nodemailer Enterprise verification",
           text: `Verify your account here: http://localhost:${port}/auth/confirm/${confirmCode}`,
@@ -86,26 +84,39 @@ router.post("/signup", (req, res, next) => {
         };
 
         transporter.sendMail(message);
+
+        login(req, user)
+          .then( () => {
+            console.log("WIN")
+            res.json({ status: "signup & login successfully", user });
+          })
+          .catch(error => {
+            console.log("FAILED CAUSE OF: ", error)
+            // res.status(500).json({
+            //   status: "login failed",
+            //   error
+            // })
+          });
       })
       .catch(e => next(e));
-  })
-    .then(savedUser => login(req, savedUser)) // Login the user using passport
-    .then(user => res.json({ status: "signup & login successfully", user })) // Answer JSON
-    .catch(e => {
-      console.log(e);
-      next(e);
-    });
+  });
 });
 
-router.get("/confirm/:confirmCode", (req, res, next) => {
-    const confirmCode = req.params.confirmCode;
-    User.findOneAndUpdate({ confirmationCode: confirmCode }, {status: "active"}, {new: true})
-      .then(user => {
-        res.status(200).redirect('http://localhost:3000')
+router.get("/confirm/:confirmCode", async (req, res, next) => {
+  const confirmCode = req.params.confirmCode
+  await User.findOneAndUpdate({ confirmCode, status: 'PENDING CONFIRMATION' }, 'confirmCode', async (err, user) => {
+    if (user == null) {
+      throw new Error("NOPE");
+    }
+    user.status = 'ACTIVE'
+    await user.save(err => {
+      if (err) {
+        throw new Error("ALMOST");
       }
-      )
-      .catch(err => console.log(err));
-  });
+      res.status(200).redirect('http://localhost:3000/home')
+    })
+  })
+})
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, theUser, failureDetails) => {

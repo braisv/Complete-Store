@@ -18,7 +18,7 @@ const cors = require("cors");
 mongoose
   .connect('mongodb://localhost/server', {useNewUrlParser: true})
   .then(x => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+    console.log(`Connected to Mongo! Database name: "Complete Store DB"`)
   })
   .catch(err => {
     console.error('Error connecting to mongo', err)
@@ -30,7 +30,7 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 const app = express();
 
 // Middleware Setup
-let whitelist = ["http://localhost:3000","https://causa-impacto.herokuapp.com"];
+let whitelist = ["http://localhost:3000"];
 let corsOptions = {
   origin: function(origin, callback) {
     let originIsWhitelisted = whitelist.indexOf(origin) !== -1;

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import AuthService from '../../utils/AuthService'
 
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -30,7 +31,8 @@ export default class Signup extends Component {
             email: '',
             phone: ''
         });
-
+        console.log("USER: ", response.user)
+        console.log("AACCIIEERRTTOO")
         this.props.getUser(response.user)
     })
     .catch(error => {
@@ -43,6 +45,7 @@ export default class Signup extends Component {
         phone: phone,
         error: true
       });
+      console.log("EERROORR")
     })
   }
 
@@ -98,3 +101,5 @@ export default class Signup extends Component {
     )
   }
 }
+
+export default withRouter(Signup);
