@@ -5,6 +5,7 @@ import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
 import AuthService from "./utils/AuthService";
 import "./App.css";
+import NavBar from "./Components/NavBar/NavBar";
 
 export default class App extends Component {
   constructor(props) {
@@ -45,51 +46,10 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.loggedInUser) {
-      return (
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>Frontend of Complete Store</p>
-            <div className="user-menu">
-              <ul className="flex-column">
-                <li>
-                  <a className="link" href="/" onClick={this.logout}>
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </header>
-        </div>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          <div className="App flex">
-            <header className="App-header">
-              <div class="container">
-                <p>complete store.</p>
-              </div>
-              <Signup getUser={this.getUser} />
-              <Login getUser={this.getUser} />
-              <Switch>
-                <Route
-                  exact
-                  path="/signup"
-                  render={() => <Signup getUser={this.getUser} />}
-                />
-                <Route
-                  exact
-                  path="/login"
-                  render={() => <Login getUser={this.getUser} />}
-                />
-                {/* <Route exact path="/test" component={Appoteosis} /> */}
-              </Switch>
-            </header>
-          </div>
-        </React.Fragment>
-      );
-    }
+    return (
+      <div className="App">
+        <NavBar title="Complete Store." />
+      </div>
+    );
   }
 }
