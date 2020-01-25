@@ -25,12 +25,12 @@ const login = (req, user) => {
 router.post("/signup", (req, res, next) => {
   const { username, password, name, surname, email, phone } = req.body;
 
-  console.log('username', username)
-  console.log('password', password)
-  console.log('name', name)
-  console.log('surname', surname)
-  console.log('email', email)
-  console.log('phone', phone)
+  // console.log('username', username)
+  // console.log('password', password)
+  // console.log('name', name)
+  // console.log('surname', surname)
+  // console.log('email', email)
+  // console.log('phone', phone)
 
   // Check for non empty user or password
   if (!username || !password) {
@@ -40,8 +40,8 @@ router.post("/signup", (req, res, next) => {
   // Check if user exists in DB
   User.findOne({ username }, (err, foundUser) => {
     if (foundUser) {
-      console.log("Username ALREADY exists")
-      throw new Error("Username already exists");
+      res.status(500).json({ errorMsg: "Username already exists" });
+      return
     }
 
     require('../helpers/regularExpressions.js')();
@@ -49,13 +49,13 @@ router.post("/signup", (req, res, next) => {
     const passwordGood = validatePassword(password);
 
     if (!mailGood) {
-      console.log("Not a mail BITCH")
-      throw new Error("Use a valid mail");
+      res.status(500).json({ errorMsg: "Use a valid mail" });
+      return
     }
 
     if (!passwordGood) {
-      console.log("Not a valid password BITCH")
-      throw new Error("Use a valid password");
+      res.status(500).json({ errorMsg: "The password must contain from 8 to 16 characters and at least 1 digit and character" });
+      return
     }
 
     const characters =
@@ -116,8 +116,9 @@ router.post("/signup", (req, res, next) => {
             // })
           });
       })
-      .catch(e => next(e));
-  });
+      .catch(err => console.log("FINAL ERROR: ", err));
+  })
+  .catch(err => console.log("FINAL ERROR: ", err));
 });
 
 router.get("/confirm/:confirmCode", async (req, res, next) => {

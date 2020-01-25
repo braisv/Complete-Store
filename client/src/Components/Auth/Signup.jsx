@@ -21,6 +21,9 @@ class Signup extends Component {
     event.preventDefault();
     const { username, password, name, surname, email, phone } = this.state;
 
+    this.validateMail(email)
+    this.validatePassword(password)
+
     this.service.signup(username, password, name, surname, email, phone)
     .then( response => {
         this.setState({
@@ -32,10 +35,10 @@ class Signup extends Component {
             phone: ''
         });
         console.log("USER: ", response.user)
-        console.log("AACCIIEERRTTOO")
         this.props.getUser(response.user)
     })
     .catch(error => {
+      console.log(error.message)
       this.setState({
         username: username,
         password: password,
@@ -43,9 +46,7 @@ class Signup extends Component {
         surname: surname,
         email: email,
         phone: phone,
-        error: true
       });
-      console.log("EERROORR")
     })
   }
 
@@ -53,7 +54,32 @@ class Signup extends Component {
     const {name, value} = event.target;
     this.setState({[name]: value});
   }
-      
+
+  validateMail = (mail) => {
+    let mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    
+    if (mail.match(mailFormat)) {
+      return;
+    }
+
+    this.setState({
+      ...this.state,
+      invalidMail: "Use a valid mail"
+    });
+  }
+
+  validatePassword = (password) => {
+    let passFormat = /^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,16}$/;
+    
+    if (password.match(passFormat)) {
+      return;
+    }
+
+    this.setState({
+      ...this.state,
+      invalidPassword: "The password must contain from 8 to 16 characters and at least 1 digit and character"
+    });
+  }      
 
   render() {
     return(
@@ -82,6 +108,8 @@ class Signup extends Component {
             <input type="text" name="email" placeholder="something@like.this..." value={this.state.email} onChange={ e => this.handleChange(e)}/>
           </fieldset>
 
+          <p>{this.state.invalidMail ? `${this.state.invalidMail}` : ''}</p>
+
           <fieldset>
             <label>Phone Number:</label>
             <input type="text" name="phone" value={this.state.phone} placeholder="+34 333 911 199..." onChange={ e => this.handleChange(e)}/>
@@ -91,12 +119,13 @@ class Signup extends Component {
             <label>Password:</label>
             <input type="password" name="password" placeholder="********" value={this.state.password} onChange={ e => this.handleChange(e)} />
           </fieldset>
+
+          <p>{this.state.invalidPassword ? `${this.state.invalidPassword}` : ''}</p>
+
           </div>
           
           <input className="submit-signup" type="submit" value="Sign up" />
         </form>
-
-        <h1>{this.state.error ? 'Error' : ''}</h1>
       </div>
     )
   }
