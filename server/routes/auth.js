@@ -39,7 +39,25 @@ router.post("/signup", (req, res, next) => {
 
   // Check if user exists in DB
   User.findOne({ username }, (err, foundUser) => {
-    if (foundUser) throw new Error("Username already exists");
+    if (foundUser) {
+      console.log("Username ALREADY exists")
+      throw new Error("Username already exists");
+    }
+
+    require('../helpers/regularExpressions.js')();
+    const mailGood = validateMail(email);
+    const passwordGood = validatePassword(password);
+
+    if (!mailGood) {
+      console.log("Not a mail BITCH")
+      throw new Error("Use a valid mail");
+    }
+
+    if (!passwordGood) {
+      console.log("Not a valid password BITCH")
+      throw new Error("Use a valid password");
+    }
+
     const characters =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let token = "";

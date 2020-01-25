@@ -67,7 +67,7 @@ export default class App extends Component {
           <div className="App flex">
             <header className="App-header">
               <Signup getUser={this.getUser}/>
-              <Login />
+              <Login getUser={this.getUser}/>
               <Switch>
                 <Route
                   exact
