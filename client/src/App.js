@@ -52,12 +52,14 @@ export default class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <p>Frontend of Complete Store</p>
             <div className="user-menu">
-                <ul className='flex-column'>
-                  <li>
-                    <a className='link' href='/' onClick={this.logout}>Logout</a>
-                  </li>
-                </ul>
-              </div>
+              <ul className="flex-column">
+                <li>
+                  <a className="link" href="/" onClick={this.logout}>
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
           </header>
         </div>
       );
@@ -66,8 +68,11 @@ export default class App extends Component {
         <React.Fragment>
           <div className="App flex">
             <header className="App-header">
-              <Signup getUser={this.getUser}/>
-              <Login getUser={this.getUser}/>
+              <div class="container">
+                <p>complete store.</p>
+              </div>
+              <Signup getUser={this.getUser} />
+              <Login getUser={this.getUser} />
               <Switch>
                 <Route
                   exact

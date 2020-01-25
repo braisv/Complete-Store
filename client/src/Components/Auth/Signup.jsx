@@ -56,6 +56,7 @@ class Signup extends Component {
   }
 
   validateMail = (mail) => {
+    // eslint-disable-next-line
     let mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
     if (mail.match(mailFormat)) {
