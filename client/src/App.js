@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import logo from "./logo.svg";
+import { Switch, Route } from "react-router-dom";
 import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
 import AuthService from "./utils/AuthService";
 import "./App.css";
 import NavBar from "./Components/NavBar/NavBar";
+import User from "./Components/User/User"
 
 export default class App extends Component {
   constructor(props) {
@@ -47,8 +47,27 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App app-container">
         <NavBar title="Complete Store." />
+        <div className="content">
+          <Switch>
+            <Route
+              exact
+              path="/signup"
+              render={() => <Signup getUser={this.getUser} />}
+            />
+            <Route
+              exact
+              path="/login"
+              render={() => <Login getUser={this.getUser} />}
+            />
+            <Route
+              exact
+              path="/user"
+              render={() => <User getUser={this.getUser} />}
+            />
+          </Switch>
+        </div>
       </div>
     );
   }

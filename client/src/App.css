@@ -1,0 +1,26 @@
+.flexi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-columni {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  width: 100vw;
+}
+
+.content {
+  background: cornflowerblue;
+  margin-top: 10vh;
+  max-width: 1200px;
+}

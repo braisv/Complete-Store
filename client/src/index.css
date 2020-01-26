@@ -6,7 +6,21 @@
   font-family: 'Verdana', sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:-webkit-any-link {
+  color: unset;
+  cursor: pointer;
+  text-decoration: none;
+  text-decoration-line: unset;
+  text-decoration-style: unset;
+  text-decoration-color: unset;
+}
+
 html, body {
-  height: 100vh;
   background: linear-gradient(to bottom, #581313, #e2dada);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
