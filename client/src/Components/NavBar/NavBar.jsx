@@ -18,7 +18,7 @@ const NavBar = ({ title }) => {
         <span className="icons">
           <FontAwesomeIcon icon={faSearch} size="3x" />
         </span>
-        <Link className="link" to="/user">
+        <Link className="link" to="/login">
           <FontAwesomeIcon icon={faUserCircle} size="3x" />
         </Link>
       </div>
