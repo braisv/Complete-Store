@@ -1,10 +1,10 @@
-.flexi {
+.flex {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.flex-columni {
+.flex-column {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,6 +21,8 @@
 
 .content {
   background: cornflowerblue;
-  margin-top: 10vh;
+  margin-top: 7vh;
+  padding-bottom: 20px;
+  width: 100%;
   max-width: 1200px;
 }
